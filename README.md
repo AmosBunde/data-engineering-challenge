@@ -43,3 +43,59 @@ If you want to test locally without Docker:
    pip install --upgrade pip
    pip install -r requirements.txt
 
+2. **Set Up Environment**:
+    ```Copy .env.example to .env.
+    Fill in your credentials/values inside .env.
+    Confirm .env is ignored by Git (check .gitignore).
+    ```
+
+3. **Run the Pipeline + API**:
+    ```bash
+    python main.py
+    This script will:
+
+    Connect to the SFTP server and download the file.
+    Process data with pandas.
+    Launch the FastAPI server on port 8000.
+
+4. **Access the Application**:
+    ```bash
+    
+    curl http://localhost:8000/ping
+
+5. **Protected route (requires X-API-KEY)**:
+    ```bash
+    curl -H "X-API-KEY: my-secret-key" "http://localhost:8000/data?start_date=2023-01-01"
+
+
+## 4. Docker Build & Run
+1. Build the Docker Image
+    ```bash
+    make docker-build
+    Or manually:
+
+    ```bash
+    docker build -t data-pipeline:latest -f docker/Dockerfile .
+2. Run the Container
+    ```bash
+    make docker-run
+    Or manually:
+
+    ```bash
+    docker run -p 8000:8000 --env-file .env data-pipeline:latest
+    Upon starting, the container will:
+
+    Install dependencies
+    Run main.py
+    Download/process the file
+    Launch the FastAPI application on port 8000
+    Using the API
+    ```
+1. Health Check
+    ```bash
+    curl http://localhost:8000/ping
+# => {"message":"pong"}
+2. Data Endpoint (Protected)
+    ```bash
+    curl -H "X-API-KEY: my-secret-key" "http://localhost:8000/data?start_date=2023-01-01&end_date=2023
+    
