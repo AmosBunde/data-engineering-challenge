@@ -82,7 +82,15 @@ If you want to test locally without Docker:
     Or manually:
 
     ```bash
-    docker run -p 8000:8000 --env-file .env data-pipeline:latest
+    docker run -p 8000:8000 \
+    -e SFTP_HOST="sftp.your-domain.com" \
+    -e SFTP_PORT="22" \
+    -e SFTP_USER="your_sftp_user" \
+    -e SFTP_PASS="your_sftp_password" \
+    -e REMOTE_PATH="/path/to/remote-file.csv" \
+    -e API_KEY="super-secret-key" \
+    data-pipeline:latest
+    
     Upon starting, the container will:
 
     Install dependencies
