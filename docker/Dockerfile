@@ -19,6 +19,10 @@ RUN pip install --no-cache-dir --upgrade pip && \
 #Copy the source code
 COPY . /app
 
+#Code lintin and testing
+RUN make lint
+RUN make test
+
 #Expose the port
 EXPOSE 8000
 
